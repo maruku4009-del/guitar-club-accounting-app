@@ -1,0 +1,31 @@
+<%= flash[:notice] %>
+<div class="container">
+    <% if @book.errors.any? %>
+        <h2><%= @book.errors.count %>error(s) prohibited this obj from being saved:</h2>
+        <ul>
+        <% @book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        
+        </ul>
+      <% end %>
+    <div class="row">
+      <div class='mx-auto col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0'>
+        <h1>Editing Book</h1>
+        <%= form_with model:@book, local:true do |f| %>
+          <div class="form-group">
+          <label for="inputTitle">Title</label>
+          <%= f.text_field :title, autofocus: true, id:"inputTitle", placeholder:"タイトル", class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+          <label for="inputOpinion">Opinion</label>
+          <%= f.text_area :opinion, autofocus: true, id:"inputOpinion", placeholder:"感想", class: "form-control" %>
+          </div>
+
+          <%= f.submit "Update Book",  class: 'btn btn-success' %>
+        <% end %>
+        <%= link_to 'Show', book_path(@book) %> | <%= link_to 'Back', books_path %>
+      </div>
+    </div>
+</div>

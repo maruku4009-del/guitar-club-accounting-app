@@ -1,0 +1,40 @@
+<div class='col-md-3'>
+       
+        <h2>User info</h2>
+        <table class='table'>
+          <tr>
+            <%= image_tag 'no_image.jpg' %>
+          </tr>
+          <tr>
+            <th>name</th>
+            <th><%= user.name %></th>
+          </tr>
+          <tr>
+            <th>introduction</th>
+            <th><%= user.introduction %></th>
+          </tr>
+        </table>
+        <div class='row'>
+        <% if user.id == current_user.id %>
+          <a class="btn btn-outline-secondary btn-block" href="/users/1/edit">
+            <i class="fas fa-user-cog"></i>
+          </a>
+        <% end %>
+        </div>
+
+        <h2 class="mt-3">New book</h2>
+        <form action="/books" accept-charset="UTF-8" method="post">
+          <input type="hidden" name="authenticity_token" value="euanJm1ZnqPSafYMeiMeLp0kaGQ8zlC8Tb6fDfS5TUDo5c3F1yLum7coItykOTPY4kX6sjIEQ5oLIaYwHZTIyQ" autocomplete="off" />
+          <div class="form-group">
+            <label for="book_title">Title</label>
+            <input class="form-control" type="text" name="book[title]" id="book_title" />
+          </div>
+          <div class="form-group">
+            <label for="book_body">Opinion</label>
+            <textarea class="form-control" name="book[opinion]" id="book_body"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="submit" name="commit" value="Create Book" class="btn btn-success" data-disable-with="Create Book" />
+          </div>
+        </form>
+ </div>

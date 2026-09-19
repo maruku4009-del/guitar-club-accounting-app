@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-sm-8 col-md-6 col-lg-4">
+
+      <h1 class="text-center my-4">ログイン</h1>
+
+      <% if flash[:alert] %>
+        <div class="alert alert-danger"><%= flash[:alert] %></div>
+      <% end %>
+
+      <%= form_tag login_path, method: :post do %>
+        <div class="form-group">
+          <%= label_tag :passcode, "パスコード" %>
+          <%= password_field_tag :passcode, nil,
+                autocomplete: "current-password",
+                class: "form-control",
+                autofocus: true %>
+        </div>
+
+        <%= submit_tag "ログイン", class: "btn btn-primary btn-block mt-3" %>
+      <% end %>
+
+    </div>
+  </div>
+</div>

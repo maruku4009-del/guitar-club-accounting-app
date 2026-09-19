@@ -1,0 +1,31 @@
+<div class="container">
+
+  <h1 class="my-4">未精算一覧</h1>
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>完了</th>
+        <th>日付</th>
+        <th>項目</th>
+        <th>金額</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transactions.each do |transaction| %>
+        <tr>
+          <td>
+            <%= form_with url: mark_as_paid_transaction_path(transaction), method: :patch, local: true do %>
+              <%= check_box_tag "paid", "1", false, onchange: "this.form.submit()" %>
+            <% end %>
+          </td>
+          <td><%= transaction.date %></td>
+          <td><%= link_to transaction.item_name, transaction_path(transaction) %></td>
+          <td><%= number_to_currency(transaction.amount, unit: "¥", precision: 0) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

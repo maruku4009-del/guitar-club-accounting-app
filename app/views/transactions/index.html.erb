@@ -1,0 +1,61 @@
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <%= link_to "← #{@year - 1}年度", transactions_path(year: @year - 1), class: "btn btn-outline-secondary btn-sm" %>
+    <h4 class="mb-0"><%= @year %>年度</h4>
+    <%= link_to "#{@year + 1}年度 →", transactions_path(year: @year + 1), class: "btn btn-outline-secondary btn-sm" %>
+  </div>
+
+  <div class="my-4 p-3" style="background-color: #f0f0f0; border-radius: 8px;">
+    <h3>
+      残高:
+      <span style="font-weight: bold;">
+        <%= number_to_currency(@total_balance, unit: "¥", precision: 0) %>
+      </span>
+    </h3>
+    <p class="text-muted" style="font-size: 0.9em;">
+      口座: <%= number_to_currency(@bank_balance, unit: "¥", precision: 0) %>
+      ／
+      現金: <%= number_to_currency(@cash_balance, unit: "¥", precision: 0) %>
+    </p>
+  </div>
+
+  <% if accountant? %>
+    <div class="mb-3">
+      <%= link_to "Excelでエクスポート", export_transactions_path(format: :xlsx), class: "btn btn-outline-secondary btn-sm" %>
+    </div>
+  <% end %>
+
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>項目</th>
+        <th>金額</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transactions.each do |transaction| %>
+        <tr>
+          <td><%= transaction.date %></td>
+          <td><%= link_to transaction.item_name, transaction_path(transaction) %></td>
+          <td>
+            <% if transaction.expense? %>
+              <span style="color: #d9534f;">
+                <%= number_to_currency(transaction.amount, unit: "¥", precision: 0) %>
+                <small class="text-muted">(支出)</small>
+              </span>
+            <% else %>
+              <span style="color: #337ab7;">
+                <%= number_to_currency(transaction.amount, unit: "¥", precision: 0) %>
+                <small class="text-muted">(収入)</small>
+              </span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

@@ -1,14 +1,29 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!, except: [:top, :about] # top, about の2つのアクションのみログインしなくてアクセス可能にする
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :require_login, except: [:top, :about]
 
-  def after_sign_in_path_for(resource)
-    user_path(current_user)
+  helper_method :current_role, :logged_in?, :accountant?, :viewer?
+
+  private
+
+  def current_role
+    session[:role]
   end
-  
-  protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:email])
+  def logged_in?
+    current_role.present?
+  end
+
+  def accountant?
+    current_role == "accountant"
+  end
+
+  def viewer?
+    current_role == "viewer"
+  end
+
+  def require_login
+    unless logged_in?
+      redirect_to login_path, alert: "ログインしてください"
+    end
   end
 end

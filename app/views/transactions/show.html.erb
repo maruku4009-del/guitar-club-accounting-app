@@ -1,0 +1,62 @@
+<div class="container" style="max-width: 700px;">
+
+  <div class="card mt-5 mb-4 shadow-sm">
+    <div class="card-body p-4">
+
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h2 class="mb-0"><%= @transaction.item_name %></h2>
+        <% if @transaction.paid? %>
+          <span class="badge badge-success" style="font-size: 1rem; padding: 8px 12px;">処理済み</span>
+        <% else %>
+          <span class="badge badge-warning" style="font-size: 1rem; padding: 8px 12px;">未処理</span>
+        <% end %>
+      </div>
+
+      <p class="text-muted mb-4"><%= @transaction.date %></p>
+
+      <h1 class="<%= @transaction.expense? ? 'text-danger' : 'text-primary' %> mb-4">
+        <%= @transaction.expense? ? "-" : "+" %><%= number_to_currency(@transaction.amount, unit: "¥", precision: 0) %>
+      </h1>
+
+      <hr>
+
+      <table class="table table-borderless mb-0">
+        <tr>
+          <th class="text-muted" style="width: 140px;">支払先・収入元</th>
+          <td><%= @transaction.payee %></td>
+        </tr>
+        <tr>
+          <th class="text-muted">支払方法</th>
+          <td><%= @transaction.bank? ? "口座" : "現金" %></td>
+        </tr>
+        <% if @transaction.note.present? %>
+        <tr>
+          <th class="text-muted">備考</th>
+          <td><%= @transaction.note %></td>
+        </tr>
+        <% end %>
+      </table>
+
+    </div>
+  </div>
+
+  <% if @transaction.receipt_photo.attached? %>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body p-4">
+        <h5 class="mb-3">レシート写真</h5>
+        <%= image_tag @transaction.receipt_photo, style: "max-width: 100%; max-height: 400px; height: auto; object-fit: contain;" %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if accountant? %>
+    <div class="d-flex mt-4" style="gap: 10px;">
+      <% unless @transaction.paid? %>
+        <%= button_to "支払い完了にする", mark_as_paid_transaction_path(@transaction), method: :patch, class: "btn btn-success" %>
+      <% end %>
+      <%= link_to "編集する", edit_transaction_path(@transaction), class: "btn btn-secondary" %>
+      <%= button_to "削除する", transaction_path(@transaction), method: :delete, class: "btn btn-danger", data: { confirm: "本当に削除しますか?" } %>
+    </div>
+  <% end %>
+
+</div>

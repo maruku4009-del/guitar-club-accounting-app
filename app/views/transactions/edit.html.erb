@@ -1,0 +1,68 @@
+<div class="container" style="max-width: 700px;">
+
+  <h2 class="mt-5 mb-4">編集</h2>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body p-4">
+
+      <%= form_with model: @transaction, local: true do |f| %>
+
+        <% if @transaction.errors.any? %>
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              <% @transaction.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :date, "日付" %>
+          <%= f.date_field :date, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :item_name, "項目名" %>
+          <%= f.text_field :item_name, class: "form-control", placeholder: "例: ギター弦、部費" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :amount, "金額" %>
+          <%= f.number_field :amount, class: "form-control" %>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <%= f.label :transaction_type, "収入 or 支出" %>
+            <%= f.select :transaction_type, options_for_select([["支出", "expense"], ["収入", "income"]], @transaction.transaction_type), {}, class: "form-control" %>
+          </div>
+          <div class="form-group col-6">
+            <%= f.label :payment_method, "支払方法" %>
+            <%= f.select :payment_method, options_for_select([["口座", "bank"], ["現金", "cash"]], @transaction.payment_method), {}, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :payee, "支払先・収入元" %>
+          <%= f.text_field :payee, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :receipt_photo, "レシート写真(任意)" %>
+          <%= f.file_field :receipt_photo, accept: "image/*", class: "form-control-file" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :note, "備考(任意)" %>
+          <%= f.text_area :note, class: "form-control", rows: 3 %>
+        </div>
+
+        <%= f.submit "更新する", class: "btn btn-primary btn-block mt-4" %>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

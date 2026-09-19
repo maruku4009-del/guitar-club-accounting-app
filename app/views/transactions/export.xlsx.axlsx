@@ -1,0 +1,26 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "出納帳") do |sheet|
+  sheet.add_row ["取引日", "項目", "収入/支出", "支出金額", "収入金額", "支出先・収入元", "支払方法", "ステータス", "カテゴリ", "備考"]
+
+  @transactions.each do |t|
+    type_label = t.income? ? "収入" : "支出"
+    expense_amount = t.expense? ? t.amount : nil
+    income_amount  = t.income? ? t.amount : nil
+    payment_label = t.bank? ? "口座" : "現金"
+    status_label = t.paid? ? "処理済み" : "未処理"
+
+    sheet.add_row [
+      t.date,
+      t.item_name,
+      type_label,
+      expense_amount,
+      income_amount,
+      t.payee,
+      payment_label,
+      status_label,
+      t.category,
+      t.note
+    ]
+  end
+end
